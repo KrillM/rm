@@ -1,7 +1,9 @@
+import A_StyledComponent_B from "./A_Theory/A_StyledComponent_B";
+
 function App() {
   return (
     <>
-    <h1>Hello World</h1>
+      <A_StyledComponent_B />
     </>
   );
 }
