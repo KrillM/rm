@@ -1,9 +1,9 @@
-import A_StyledComponent_B from "./A_Theory/A_StyledComponent_B";
+import TheComponents from "./A_Theory/TheComponents";
 
 function App() {
   return (
     <>
-      <A_StyledComponent_B />
+      <TheComponents />
     </>
   );
 }
