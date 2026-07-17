@@ -1,11 +1,9 @@
-import B_Animation from "./B_Animation";
-import C_DarkMode from "./C_DarkMode";
-import D_Theme from "./D_Theme"
+import A_TypeScript_A from "./A_TypeScript_A";
 
 const TheComponents = () => {
     return(
         <>
-            <D_Theme />
+            <A_TypeScript_A/>
         </>
     )
 }

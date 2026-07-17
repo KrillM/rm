@@ -1,4 +1,4 @@
-import TheComponents from "./A_Theory/TheComponents";
+import TheComponents from "./A_Theory/B_TypeScript/TheComponents";
 
 function App() {
   return (
