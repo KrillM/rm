@@ -1,9 +1,9 @@
-import TheComponents from "./A_Theory/B_TypeScript/TheFinalComponents";
+import Router from "./B_CryptoCracker/Router.tsx";
 
 function App() {
   return (
     <>
-      <TheComponents />
+      <Router />
     </>
   );
 }
