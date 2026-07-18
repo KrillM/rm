@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { ThemeProvider } from 'styled-components';
 import {lightTheme, darkTheme} from './A_Theory/B_TypeScript/theme.ts'
+import {theme} from './B_CryptoCracker/theme.ts'
 
 // TypsScript는 null을 허용하지 않으므로 null이 아님을 보증한다는 뜻으로 뒤에 !를 붙인다.
 const root = ReactDOM.createRoot(document.getElementById('root')!);
@@ -19,7 +20,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
   </React.StrictMode>
