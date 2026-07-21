@@ -5,6 +5,7 @@ import Chart from "./Chart"
 import Price from "./Price";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "./api";
+import {Helmet} from "react-helmet";
 
 const Title = styled.h1`
     font-size: 48px;
@@ -163,15 +164,22 @@ export default function Coin (){
     //     })()
     // },[])
 
-    const {isLoading: infoLoading, data: infoData} 
-        = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
-    const {isLoading: tickerLoading, data: tickerData} 
-        = useQuery<IPriceData>(["tickers", coinId], () => fetchCoinTickers(coinId));
+    const {isLoading: infoLoading, data: infoData} = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
+    const {isLoading: tickerLoading, data: tickerData} = useQuery<IPriceData>(
+        ["tickers", coinId], 
+        () => fetchCoinTickers(coinId),
+        {
+            refetchInterval: 5000,
+        }
+    );
 
     const loading = infoLoading || tickerLoading;
 
     return(
         <Container>
+            <Helmet>
+                <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+            </Helmet>
             <Header>
                 <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
             </Header>
@@ -189,8 +197,8 @@ export default function Coin (){
                             <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
-                            <span>Open Source:</span>
-                            <span>${infoData?.open_source ? "Yes" : "No"}</span>
+                            <span>Price:</span>
+                            <span>${tickerData?.quotes.USD.price.toFixed(3)}</span>
                         </OverviewItem>
                     </Overview>
                     <Description>
@@ -221,7 +229,7 @@ export default function Coin (){
                             <Price />
                         </Route>
                         <Route path={`/${coinId}/chart`}>
-                            <Chart />
+                            <Chart coinId = {coinId} />
                         </Route>
                     </Switch>
                 </>
