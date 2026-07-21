@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import {ReactQueryDevtools} from "react-query/devtools";
 import Router from "./Router.tsx";
 
 const GlobalStyle = createGlobalStyle`
@@ -81,6 +82,9 @@ const TheComponents = () => {
         <>
             <GlobalStyle />
             <Router />
+
+            {/* 코드 동작 상황을 알 수 있다. */}
+            <ReactQueryDevtools initialIsOpen={false}/>
         </>
     )
 }

@@ -3,6 +3,8 @@ import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "reac
 import styled from "styled-components";
 import Chart from "./Chart"
 import Price from "./Price";
+import { useQuery } from "react-query";
+import { fetchCoinInfo, fetchCoinTickers } from "./api";
 
 const Title = styled.h1`
     font-size: 48px;
@@ -137,10 +139,6 @@ interface IPriceData {
 }
 
 export default function Coin (){
-    const [loading, setLoading] = useState(true);
-    const [info, setInfo] = useState<IInfoData>();
-    const [priceInfo, setPriceInfo] = useState<IPriceData>();
-
     // URL 경로의 coinId 값을 가져온다.
     const {coinId} = useParams<IParams>();
     const {state} = useLocation<IState>();
@@ -148,23 +146,34 @@ export default function Coin (){
     const priceMatch = useRouteMatch("/:coinId/price");
     const chartMatch = useRouteMatch("/:coinId/chart");
 
-    useEffect(()=>{
-        (async () => {
-            const infoData = await(
-                await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json();
-                const priceData = await (
-                    await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-                ).json();
-                setInfo(infoData);
-                setPriceInfo(priceData);
-                setLoading(false);
-        })()
-    },[])
+    // const [loading, setLoading] = useState(true);
+    // const [info, setInfo] = useState<IInfoData>();
+    // const [priceInfo, setPriceInfo] = useState<IPriceData>();
+
+    // useEffect(()=>{
+    //     (async () => {
+    //         const infoData = await(
+    //             await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json();
+    //             const priceData = await (
+    //                 await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+    //             ).json();
+    //             setInfo(infoData);
+    //             setPriceInfo(priceData);
+    //             setLoading(false);
+    //     })()
+    // },[])
+
+    const {isLoading: infoLoading, data: infoData} 
+        = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
+    const {isLoading: tickerLoading, data: tickerData} 
+        = useQuery<IPriceData>(["tickers", coinId], () => fetchCoinTickers(coinId));
+
+    const loading = infoLoading || tickerLoading;
 
     return(
         <Container>
             <Header>
-                <Title>{state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
+                <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
@@ -173,28 +182,28 @@ export default function Coin (){
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
-                            <span>{info?.rank}</span>
+                            <span>{infoData?.rank}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Symbol:</span>
-                            <span>${info?.symbol}</span>
+                            <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Open Source:</span>
-                            <span>${info?.open_source ? "Yes" : "No"}</span>
+                            <span>${infoData?.open_source ? "Yes" : "No"}</span>
                         </OverviewItem>
                     </Overview>
                     <Description>
-                        {info?.description}
+                        {infoData?.description}
                     </Description>
                     <Overview>
                         <OverviewItem>
                             <span>Total Supply:</span>
-                            <span>{priceInfo?.total_supply}</span>
+                            <span>{tickerData?.total_supply}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Max Supply:</span>
-                            <span>{priceInfo?.max_supply}</span>
+                            <span>{tickerData?.max_supply}</span>
                         </OverviewItem>
                     </Overview>
 
