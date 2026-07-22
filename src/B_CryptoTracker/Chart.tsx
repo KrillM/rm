@@ -15,9 +15,10 @@ interface IHistData {
 
 interface IChartProps {
   coinId: string;
+  isLightTheme: boolean
 }
 
-function Chart({coinId}:IChartProps) {
+function Chart({coinId, isLightTheme}:IChartProps) {
   const {isLoading, data} = useQuery<IHistData[]>(
     ["ohlcv", coinId], 
     () => fetchCoinHist(coinId),
@@ -40,7 +41,7 @@ function Chart({coinId}:IChartProps) {
             ]}
             options={{
               theme: {
-                mode: "dark",
+                mode: isLightTheme ? "light" : "dark",
               },
               chart: {
                 height:300,

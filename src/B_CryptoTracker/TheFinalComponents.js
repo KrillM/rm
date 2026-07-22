@@ -1,6 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import {ReactQueryDevtools} from "react-query/devtools";
-import Router from "./Router.tsx";
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from "./theme";
+import Router from "./Router";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -78,13 +81,18 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const TheComponents = () => {
+    const [isLightTheme, setIsLightTheme] = useState(true);
+    const toggleDark = () => setIsLightTheme(current => !current)
+
     return(
         <>
+        <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>            
             <GlobalStyle />
-            <Router />
+            <Router toggleDark={toggleDark} isLightTheme={isLightTheme}/>
 
             {/* 코드 동작 상황을 알 수 있다. */}
             <ReactQueryDevtools initialIsOpen={false}/>
+        </ThemeProvider>
         </>
     )
 }

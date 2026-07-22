@@ -1,4 +1,4 @@
-import TheComponents from "./B_CryptoCracker/TheFinalComponents";
+import TheComponents from "./B_CryptoTracker/TheFinalComponents";
 
 function App() {
   return (

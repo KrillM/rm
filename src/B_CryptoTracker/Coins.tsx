@@ -60,13 +60,17 @@ interface ICoin {
     is_active: boolean;
     type: string;
 }
+interface IRouterProps {
+  toggleDark: () => void;
+  isLightTheme: boolean
+}
 
 const Loader = styled.span`
     text-align: center;
     display: block;
 `;
 
-export default function Coins (){
+export default function Coins ({toggleDark, isLightTheme}:IRouterProps){
     // const [coins, setCoins] = useState<CoinInterface[]>([]);
     // const [loading, setLoading] = useState(true);
 
@@ -89,6 +93,7 @@ export default function Coins (){
             </Helmet>
             <Header>
                 <Title>코인</Title>
+                <button onClick={toggleDark}>Toggle Mode</button>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>

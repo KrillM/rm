@@ -139,7 +139,11 @@ interface IPriceData {
     };
 }
 
-export default function Coin (){
+interface IRouterProps {
+  isLightTheme: boolean;
+}
+
+export default function Coin ({isLightTheme}:IRouterProps){
     // URL 경로의 coinId 값을 가져온다.
     const {coinId} = useParams<IParams>();
     const {state} = useLocation<IState>();
@@ -231,7 +235,7 @@ export default function Coin (){
                             <Price coinId = {coinId}/>
                         </Route>
                         <Route path={`/${coinId}/chart`}>
-                            <Chart coinId = {coinId} />
+                            <Chart coinId = {coinId} isLightTheme={isLightTheme}/>
                         </Route>
                     </Switch>
                 </>
