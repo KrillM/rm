@@ -181,7 +181,9 @@ export default function Coin (){
                 <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
             </Helmet>
             <Header>
-                <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
+                <Link to={`/`}>
+                    <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
+                </Link>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
@@ -226,7 +228,7 @@ export default function Coin (){
 
                     <Switch>
                         <Route path={`/${coinId}/price`}>
-                            <Price />
+                            <Price coinId = {coinId}/>
                         </Route>
                         <Route path={`/${coinId}/chart`}>
                             <Chart coinId = {coinId} />
