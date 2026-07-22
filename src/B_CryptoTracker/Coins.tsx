@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {fetchCoins} from "./api";
 import {Helmet} from "react-helmet";
+import { useSetRecoilState } from "recoil";
+import { isLightThemeAtom } from "./atoms";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -60,17 +62,13 @@ interface ICoin {
     is_active: boolean;
     type: string;
 }
-interface IRouterProps {
-  toggleDark: () => void;
-  isLightTheme: boolean
-}
 
 const Loader = styled.span`
     text-align: center;
     display: block;
 `;
 
-export default function Coins ({toggleDark, isLightTheme}:IRouterProps){
+export default function Coins (){
     // const [coins, setCoins] = useState<CoinInterface[]>([]);
     // const [loading, setLoading] = useState(true);
 
@@ -85,6 +83,7 @@ export default function Coins ({toggleDark, isLightTheme}:IRouterProps){
     // }, []);
 
     const {isLoading, data} = useQuery<ICoin[]>("allCoins", fetchCoins);
+    const setterFunc = useSetRecoilState(isLightThemeAtom);
 
     return(
         <Container>
@@ -93,7 +92,7 @@ export default function Coins ({toggleDark, isLightTheme}:IRouterProps){
             </Helmet>
             <Header>
                 <Title>코인</Title>
-                <button onClick={toggleDark}>Toggle Mode</button>
+                <button onClick={()=> setterFunc((prev)=>!prev)}>Toggle Mode</button>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>

@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from "./theme";
 import Router from "./Router";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isLightThemeAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -81,14 +83,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const TheComponents = () => {
-    const [isLightTheme, setIsLightTheme] = useState(true);
-    const toggleDark = () => setIsLightTheme(current => !current)
+    const isLightTheme = useRecoilValue(isLightThemeAtom);
 
     return(
         <>
         <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>            
             <GlobalStyle />
-            <Router toggleDark={toggleDark} isLightTheme={isLightTheme}/>
+            <Router />
 
             {/* 코드 동작 상황을 알 수 있다. */}
             <ReactQueryDevtools initialIsOpen={false}/>
