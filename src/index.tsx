@@ -24,7 +24,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 const queryClient = new QueryClient();
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode> // <- dragdrop 방해함 (18 버전 이상)
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         {/* <ThemeProvider theme={theme}> */}
@@ -32,6 +32,6 @@ root.render(
         {/* </ThemeProvider> */}
       </QueryClientProvider>
     </RecoilRoot>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 

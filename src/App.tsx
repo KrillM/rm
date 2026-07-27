@@ -1,4 +1,4 @@
-import TheComponents from "./D_StateManagement/TheFinalComponents";
+import TheComponents from "./E_TrelloClone/TheFinalComponents"
 
 function App() {
   return (
