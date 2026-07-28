@@ -1,5 +1,7 @@
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { toDoState } from "./atoms";
 
 const Wrapper = styled.div`
     display: flex;
@@ -32,76 +34,25 @@ const Card = styled.div`
     background-color: ${(props) => props.theme.cardColor};
 `;
 
-const toDos = ["a", "b", "c", "d", "e", "f"];
-
 export default function App(){
-    const onDragEnd = () => {}
+    const [toDos, setToDos] = useRecoilState(toDoState);
+    const onDragEnd = ({draggableId, destination, source}:DropResult) => {
+        if(!destination) return;
+        setToDos(oldToDos => {
+            const copyToDos = [...oldToDos];
+            
+            // 순서를 변경할 대상을 배열에서 삭제한다.
+            copyToDos.splice(source.index, 1);
+
+            // 대상을 다시 입력한다.
+            copyToDos.splice(destination?.index, 0, draggableId);
+
+            return copyToDos;
+        })
+    }
 
     return (
     <>
-        {/* <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="one">
-                {(prev)=>(
-                    <ul ref={prev.innerRef} {...prev.droppableProps}>
-                        {/* <Draggable draggableId="first" index={0}>
-                            {(prev) => (
-                                <li 
-                                    ref={prev.innerRef} 
-                                    {...prev.draggableProps} 
-                                    {...prev.dragHandleProps}
-                                >
-                                    One
-                                </li>
-                            )}
-                        </Draggable>
-                        <Draggable draggableId="second" index={1}>
-                            {(prev) => (
-                                <li
-                                    ref={prev.innerRef} 
-                                    {...prev.draggableProps} 
-                                    {...prev.dragHandleProps}
-                                >
-                                    Two
-                                </li>
-                            )}
-                        </Draggable> */}
-                        {/* <Draggable draggableId="first" index={0}>
-                            {(prev) => (
-                                <li 
-                                    ref={prev.innerRef} 
-                                    {...prev.draggableProps} 
-                                >
-                                    <span {...prev.dragHandleProps}>🔥</span>
-                                    One
-                                </li>
-                            )}
-                        </Draggable>
-                        <Draggable draggableId="second" index={1}>
-                            {(prev) => (
-                                <li
-                                    ref={prev.innerRef} 
-                                    {...prev.draggableProps} 
-                                >
-                                    <span {...prev.dragHandleProps}>🔥</span>
-                                    Two
-                                </li>
-                            )}
-                        </Draggable> */}
-                    {/* <Draggable draggableId="first" index={0}>
-                            {(prev) => (
-                                <li 
-                                    ref={prev.innerRef} 
-                                    {...prev.draggableProps} 
-                                >
-                                    <span {...prev.dragHandleProps}>🔥</span>
-                                    One
-                                </li>
-                            )}
-                        </Draggable>
-                    </ul>
-                )}
-            </Droppable>
-        </DragDropContext> */}
         <DragDropContext onDragEnd={onDragEnd}>
             <Wrapper>
                 <Boards>
@@ -109,7 +60,7 @@ export default function App(){
                         {(prev)=> (
                             <Board ref={prev.innerRef} {...prev.droppableProps}>
                                 {toDos.map((toDo, index)=>(
-                                    <Draggable draggableId={toDo} index={index}>
+                                    <Draggable key={toDo} draggableId={toDo} index={index}>
                                         {(prev)=>(
                                             <Card
                                                 ref={prev.innerRef}
