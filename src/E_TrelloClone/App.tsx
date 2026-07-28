@@ -1,4 +1,5 @@
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"
+import DraggableCard from "./Component/DraggableCard";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
@@ -27,13 +28,6 @@ const Board = styled.div`
     min-height: 200px;
 `;
 
-const Card = styled.div`
-    border-radius: 5px;
-    margin-bottom: 5px;
-    padding: 10px 10px;
-    background-color: ${(props) => props.theme.cardColor};
-`;
-
 export default function App(){
     const [toDos, setToDos] = useRecoilState(toDoState);
     const onDragEnd = ({draggableId, destination, source}:DropResult) => {
@@ -60,17 +54,7 @@ export default function App(){
                         {(prev)=> (
                             <Board ref={prev.innerRef} {...prev.droppableProps}>
                                 {toDos.map((toDo, index)=>(
-                                    <Draggable key={toDo} draggableId={toDo} index={index}>
-                                        {(prev)=>(
-                                            <Card
-                                                ref={prev.innerRef}
-                                                {...prev.dragHandleProps}
-                                                {...prev.draggableProps}
-                                            >
-                                                {toDo}    
-                                            </Card>
-                                        )}
-                                    </Draggable>
+                                    <DraggableCard key={toDo} index={index} toDo={toDo}/>
                                 ))}
                                 {prev.placeholder}
                             </Board>
