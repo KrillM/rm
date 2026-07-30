@@ -29,8 +29,9 @@ export default function App(){
         if(destination?.droppableId === source.droppableId){
             setToDos((oldToDos)=> {
                 const boardCopy = [...oldToDos[source.droppableId]];
+                const taskObj = boardCopy[source.index]
                 boardCopy.splice(source.index, 1);
-                boardCopy.splice(destination?.index, 0, draggableId);
+                boardCopy.splice(destination?.index, 0, taskObj);
                 return{
                     ...oldToDos,
                     [source.droppableId]: boardCopy,
@@ -44,10 +45,11 @@ export default function App(){
                 // sourceBoard - 원래 Board
                 // targetBoart - 이동할 Board
                 const sourceBoard = [...allBoards[source.droppableId]];
+                const taskObj = sourceBoard[source.index];
                 const targetBoard = [...allBoards[destination.droppableId]];
 
                 sourceBoard.splice(source.index, 1);
-                targetBoard.splice(destination?.index, 0, draggableId);
+                targetBoard.splice(destination?.index, 0, taskObj);
                 return {
                     ...allBoards,
                     [source.droppableId]: sourceBoard,
