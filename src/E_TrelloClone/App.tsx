@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
 const Boards = styled.div`
     display: grid;
-    width: 100%;
+    // width: 100%;
     gap: 10px;
     grid-template-columns: repeat(3, 1fr);
 `;
@@ -48,8 +48,19 @@ export default function App(){
                 const taskObj = sourceBoard[source.index];
                 const targetBoard = [...allBoards[destination.droppableId]];
 
+                console.log("원래 : ", source.droppableId, " -> 변경 : " ,destination.droppableId)
+
+
                 sourceBoard.splice(source.index, 1);
                 targetBoard.splice(destination?.index, 0, taskObj);
+
+                if(destination.droppableId === "Delete"){
+                return {
+                        ...allBoards,
+                        [source.droppableId]: sourceBoard,
+                    }
+                }
+
                 return {
                     ...allBoards,
                     [source.droppableId]: sourceBoard,

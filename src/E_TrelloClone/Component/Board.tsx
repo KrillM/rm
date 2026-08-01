@@ -94,13 +94,15 @@ const Board = ({toDos, boardId}: IBoardProps) => {
             {/* <input ref={inputRef} placeholder="Type here"/>
             <button onClick={onClick}>Click Here</button> */}
 
-            <Form onSubmit={handleSubmit(onValid)}>
-                <input 
-                    {...register("toDo", {required: true})}
-                    type="text" 
-                    placeholder={`Add task on ${boardId}`}
-                />
-            </Form>
+            {boardId !== "Delete" && (
+                <Form onSubmit={handleSubmit(onValid)}>
+                    <input 
+                        {...register("toDo", {required: true})}
+                        type="text" 
+                        placeholder={`Add task on ${boardId}`}
+                    />
+                </Form>
+            )}
             <Droppable droppableId={boardId}>
                 {(prev, snapshot)=> (
                     <Zone 
