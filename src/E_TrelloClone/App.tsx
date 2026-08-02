@@ -23,8 +23,10 @@ const Boards = styled.div`
 
 export default function App(){
     const [toDos, setToDos] = useRecoilState(toDoState);
+
     const onDragEnd = (info:DropResult) => {
-        const {destination, draggableId, source} = info;
+        const {destination, source} = info;
+
         if(!destination) return;
         if(destination?.droppableId === source.droppableId){
             setToDos((oldToDos)=> {
@@ -38,18 +40,13 @@ export default function App(){
                 }
             })
         }
-
-        // 다른 Board로 옮기기
-        if(destination.droppableId !== source.droppableId){
+        else { // 다른 Board로 옮기기
             setToDos((allBoards)=>{
                 // sourceBoard - 원래 Board
                 // targetBoart - 이동할 Board
                 const sourceBoard = [...allBoards[source.droppableId]];
                 const taskObj = sourceBoard[source.index];
                 const targetBoard = [...allBoards[destination.droppableId]];
-
-                console.log("원래 : ", source.droppableId, " -> 변경 : " ,destination.droppableId)
-
 
                 sourceBoard.splice(source.index, 1);
                 targetBoard.splice(destination?.index, 0, taskObj);
@@ -70,8 +67,16 @@ export default function App(){
         }
     }
 
+    const addBoard = (newBoard: string) => {
+        setToDos((allBoards) => ({
+            ...allBoards, 
+            [newBoard]: [],
+        }))
+    }
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
+            <button onClick={()=> addBoard(Date.now().toString())}>Add Board</button>
             <Wrapper>
                 <Boards>
                     {Object.keys(toDos).map((boardId) => (
