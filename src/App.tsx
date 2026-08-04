@@ -1,4 +1,4 @@
-import TheComponents from "./E_TrelloClone/TheFinalComponents"
+import TheComponents from "./F_Animation/TheFinalComponents"
 
 function App() {
   return (
