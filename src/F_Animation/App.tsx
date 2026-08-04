@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { motion, Variants } from "framer-motion";
+import { motion, transform, Variants } from "framer-motion";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
     height: 100vh;
@@ -9,7 +10,26 @@ const Wrapper = styled.div`
     align-items: center;
 `;
 
+const ParentBox = styled.div`
+    width: 600px;
+    height: 600px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+`
+
 const Box = styled(motion.div)`
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255,255,255,1);
+    border-radius: 40px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const Box4Variant = styled(motion.div)`
     width: 200px;
     height: 200px;
     display: grid;
@@ -46,12 +66,13 @@ const boxVariants: Variants = {
             duration: 0.5,
             bounce: 0.5,
             delayChildren: 0.5,
-            staggerChildren: 0.2,
+            staggerChildren: 0.2, // 자녀 route에서 순서대로 등장하게 해준다.
         }
     }
 }
 
 const circleVariants: Variants = {
+    // x, y는 motion 고유 문법이다.
     start: {
         opacity: 0,
         y: 10,
@@ -62,7 +83,17 @@ const circleVariants: Variants = {
     }
 }
 
+const boxGesture = {
+    // hover : { scale: 1.5, rotateZ: 90},
+    // click : {scale: 1, borderRadius: "100px"},
+    // drag: {backgroundColor: "rgb(46, 204, 113)", transition: {duration: 10}}
+    hover: { rotateZ: 90 },
+    click: { borderRadius: "100px" },
+}
+
 export default function App(){
+    const parentBoxRef = useRef<HTMLDivElement>(null);
+
     return (
         <Wrapper>
             {/* Basic */}
@@ -78,13 +109,27 @@ export default function App(){
                 animate="end"        // myVariant의 end와 이름이 같아야 한다.
             /> */}
 
-            <Box variants={boxVariants} initial="start" animate="end">
-                {/* 부모에서 initial, animate 선언하면 자녀는 따로 선언할 필요가 없다. */}
+            {/* <Box4Variant variants={boxVariants} initial="start" animate="end">
+                // 부모에서 initial, animate 선언하면 자녀는 따로 선언할 필요가 없다. 
                 <Circle variants={circleVariants}/>
                 <Circle variants={circleVariants}/>
                 <Circle variants={circleVariants}/>
                 <Circle variants={circleVariants}/>
-            </Box>
+            </Box4Variant> */}
+
+            {/* Gestures */}
+            <ParentBox ref={parentBoxRef}>
+                <Box 
+                    drag // 이동 가능하나 제한이 없다
+                    dragSnapToOrigin // 이동 후 마우스 클릭을 해체하면 원래 위치로 돌아온다
+                    dragElastic={0.5} // dragElastic의 기본 값
+                    dragConstraints={parentBoxRef}
+                    variants={boxGesture}
+                    whileHover="hover"
+                    whileDrag="drag"
+                    whileTap="click"
+                />
+            </ParentBox>
         </Wrapper>
     );
 }
