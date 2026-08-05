@@ -1,4 +1,4 @@
-import TheComponents from "./F_Animation/TheFinalComponents"
+import TheComponents from "./G_LastStand/TheFinalComponents"
 
 function App() {
   return (

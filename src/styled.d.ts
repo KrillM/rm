@@ -8,5 +8,16 @@ declare module 'styled-components'{
         btnColor?: string;
         boardColor?: string;
         cardColor?: string;
+
+        red?: string;
+        black?: {
+            veryDark: string;
+            darker: string;
+            lighter: string;
+        };
+        white?: {
+            darker: string;
+            lighter: string;
+        };
     }
 }
